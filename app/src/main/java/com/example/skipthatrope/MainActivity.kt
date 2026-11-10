@@ -61,6 +61,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.graphics.toArgb
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -164,11 +165,6 @@ private fun ArchedTitle(text: String, modifier: Modifier = Modifier) {
         },
     )
 }
-
-private fun Color.toArgb(): Int = android.graphics.Color.argb(
-    (alpha * 255).toInt(), (red * 255).toInt(), (green * 255).toInt(), (blue * 255).toInt(),
-)
-
 @Composable
 private fun Tagline(modifier: Modifier = Modifier) {
     val glowStyle = TextStyle(
@@ -210,8 +206,8 @@ private fun LoginCard(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .border(BorderStroke(9.dp, BrandGreen), RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
-            .background(Cream, RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
+            .border(BorderStroke(9.dp, BrandGreen), RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp, bottomStart = 28.dp, bottomEnd = 28.dp))
+            .background(Cream, RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp, bottomStart = 28.dp, bottomEnd = 28.dp))
             .padding(horizontal = 24.dp, vertical = 28.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
