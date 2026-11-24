@@ -66,7 +66,7 @@ fun LoginScreen(
         Tagline(modifier = Modifier.padding(start = 24.dp))
 
         // Keeping the item on screen spaced between themselves, pushing the card to the bottom
-        Spacer(Modifier.height(40.dp))
+        Spacer(Modifier.weight(1f))
 
         // Here we had previously the login related stuff, changing to just entering the app
         EnterCard(onEnterApp)
