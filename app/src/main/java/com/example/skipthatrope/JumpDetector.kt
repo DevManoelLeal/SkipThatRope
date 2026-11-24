@@ -64,6 +64,9 @@ class JumpDetector(
     }
 
     private fun handleAcceleration(g: Float) {
+        // Accelerometers can produce fluctuating readings due to vibrations, small movements and sensor noise.
+        // Using every raw measurement directly, small fluctuations could cause the app to incorrectly identify a landing
+        // So Exponential smoothing reduces these fluctuations by combining the latest measurement with the previous smoothed measurement.
         smoothedG = SMOOTHING * g + (1f - SMOOTHING) * smoothedG
 
         if (armed && smoothedG > LANDING_THRESHOLD_G) {
