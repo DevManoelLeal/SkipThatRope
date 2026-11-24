@@ -1,14 +1,8 @@
 package com.example.skipthatrope
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import com.example.skipthatrope.ui.theme.SkipThatRopeTheme
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PathMeasure
@@ -22,84 +16,42 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.graphics.toArgb
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            SkipThatRopeTheme {
-                LoginScreen()
-            }
-        }
-    }
-}
-
-private val Cream = Color(0xFFFFFDF0)
-private val TitleYellow = Color(0xFFFFC800)
-private val TitleShadow = Color(0xFF7B2D2D)
-private val GlowGreen = Color(0xFF3DDC84)
-private val TaglineGreen = Color(0xFFB9F6CA)
-private val BulletGreen = Color(0xFFC8F7D8)
-private val BrandGreen = Color(0xFF00B84A)
-private val FieldBorder = Color(0xFF6FD99A)
-private val Lime = Color(0xFFDEFF8F)
-private val TaglineFont: FontFamily = FontFamily.SansSerif
-private val BodyFont: FontFamily = FontFamily.SansSerif
-
 @Composable
 fun LoginScreen(
-    onLogin: (username: String, password: String) -> Unit = { _, _ -> },
-    onCreateAccount: () -> Unit = {},
-) {
-    var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-
+    // No more login or register, for now it's just get into the app
+    onEnterApp: () -> Unit = {}) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Cream)
-            .verticalScroll(rememberScrollState()),
+            .statusBarsPadding(),
     ) {
         ArchedTitle(
             text = "Skipping with you",
@@ -113,16 +65,11 @@ fun LoginScreen(
 
         Tagline(modifier = Modifier.padding(start = 24.dp))
 
+        // Keeping the item on screen spaced between themselves, pushing the card to the bottom
         Spacer(Modifier.height(40.dp))
 
-        LoginCard(
-            username = username,
-            onUsernameChange = { username = it },
-            password = password,
-            onPasswordChange = { password = it },
-            onLogin = { onLogin(username, password) },
-            onCreateAccount = onCreateAccount,
-        )
+        // Here we had previously the login related stuff, changing to just entering the app
+        EnterCard(onEnterApp)
     }
 }
 
@@ -194,102 +141,33 @@ private fun Tagline(modifier: Modifier = Modifier) {
     }
 }
 
+// Changed it all here to the new enter button. Took away the obsolete info regarding the login, changed to the enter button
 @Composable
-private fun LoginCard(
-    username: String,
-    onUsernameChange: (String) -> Unit,
-    password: String,
-    onPasswordChange: (String) -> Unit,
-    onLogin: () -> Unit,
-    onCreateAccount: () -> Unit,
-) {
+private fun EnterCard(onEnterApp: () -> Unit) {
+    val cardShape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .border(BorderStroke(9.dp, BrandGreen), RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp, bottomStart = 28.dp, bottomEnd = 28.dp))
             .background(Cream, RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp, bottomStart = 28.dp, bottomEnd = 28.dp))
+            .navigationBarsPadding()
             .padding(horizontal = 24.dp, vertical = 28.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        FieldLabel("Username")
-        GreenTextField(
-            value = username,
-            onValueChange = onUsernameChange,
-            keyboardType = KeyboardType.Text,
-        )
-
-        Spacer(Modifier.height(16.dp))
-
-        FieldLabel("Password")
-        GreenTextField(
-            value = password,
-            onValueChange = onPasswordChange,
-            keyboardType = KeyboardType.Password,
-            isPassword = true,
-        )
-
         Spacer(Modifier.height(16.dp))
 
         Button(
-            onClick = onLogin,
+            onClick = onEnterApp,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
             shape = RoundedCornerShape(28.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Lime, contentColor = BrandGreen),
         ) {
-            Text("Login", fontFamily = BodyFont, fontWeight = FontWeight.Bold, fontSize = 22.sp)
-        }
-
-        Button(
-            onClick = onCreateAccount,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .height(44.dp),
-            shape = RoundedCornerShape(22.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Lime, contentColor = Color.Black),
-        ) {
-            Text("CREATE ACCOUNT", fontFamily = BodyFont, fontSize = 16.sp)
+            Text("Enter", fontFamily = BodyFont, fontWeight = FontWeight.Bold, fontSize = 22.sp)
         }
     }
-}
-
-@Composable
-private fun FieldLabel(text: String) {
-    Text(
-        text = text,
-        color = BrandGreen,
-        fontFamily = BodyFont,
-        fontWeight = FontWeight.Bold,
-        fontSize = 20.sp,
-    )
-}
-
-@Composable
-private fun GreenTextField(
-    value: String,
-    onValueChange: (String) -> Unit,
-    keyboardType: KeyboardType,
-    isPassword: Boolean = false,
-) {
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(56.dp),
-        singleLine = true,
-        shape = RoundedCornerShape(12.dp),
-        visualTransformation = if (isPassword) PasswordVisualTransformation() else androidx.compose.ui.text.input.VisualTransformation.None,
-        keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = BrandGreen,
-            unfocusedBorderColor = FieldBorder,
-            focusedContainerColor = Cream,
-            unfocusedContainerColor = Cream,
-            cursorColor = BrandGreen,
-        ),
-    )
 }
 
 @Preview(showBackground = true, widthDp = 360, heightDp = 800)
